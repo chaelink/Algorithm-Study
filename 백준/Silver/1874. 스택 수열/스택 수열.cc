@@ -2,45 +2,38 @@
 #include <stack>
 #include <vector>
 using namespace std;
-
 int main() {
-    ios::sync_with_stdio(false);  // C 스타일 입출력과의 동기화 해제
-    cin.tie(NULL);  // cin 성능 개선
-    cout.tie(NULL); // cout 성능 개선
-
-    int n;
-    cin >> n;
-
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
     stack<int> s;
-    vector<char> result;  // 연산 순서 기록
-
-    int current = 1;  // 1부터 push 시작
-
-    for (int i = 0; i < n; i++) {
-        int target;
-        cin >> target;
-
-        // 필요한 숫자까지 push
-        while (current <= target) {
-            s.push(current++);
-            result.push_back('+');
+    vector<char> listup;
+    
+    int n;
+    cin>>n;
+    int num=1;
+    
+    for(int i=0; i<n; i++) {
+        int m;
+        cin>>m;
+        
+        while(num<=m) {
+            s.push(num);
+            num++;
+            listup.push_back('+');
         }
-
-        // 스택 top이 목표 숫자와 같아야 pop 가능
-        if (s.top() == target) {
+        if(s.top()==m) {
+            listup.push_back('-');
             s.pop();
-            result.push_back('-');
         } else {
-            // 순서 맞출 수 없음
-            cout << "NO\n";
-            return 0;  // 프로그램 즉시 종료
+            cout<<"NO"<<'\n';
+            return 0;
         }
     }
-
-    // 연산 기록 한꺼번에 출력
-    for (char op : result) {
-        cout << op << '\n';
+    
+    for(int i=0; i<listup.size(); i++) {
+        cout<<listup[i]<<'\n';
     }
-
     return 0;
 }
