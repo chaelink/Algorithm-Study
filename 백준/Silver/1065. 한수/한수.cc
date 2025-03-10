@@ -1,26 +1,22 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
-
-
-bool isHanNumber(int n) {
-    
-    if (n < 100) return true;  // 1~99
-
-    int a = n / 100;       
-    int b = (n / 10) % 10; 
-    int c = n % 10;        
-
-    return (a - b == b - c);  
-}
-
 int main() {
-    int N, count = 0;
-    cin >> N;
-
-    for (int i = 1; i <= N; i++) {
-        if (isHanNumber(i)) count++;
+    int n;
+    cin>>n;
+    int check=0;
+    
+    if(n<100) {
+        cout<<n;
+        return 0;
+    } else {
+        for(int i=100; i<=n; i++) {
+            int a = i/100;
+            int b = (i/10)%10;
+            int c = i%10;
+            if( b-a == c-b)
+                check++;
+        }
+        cout<<check+99;
+        return 0;
     }
-
-    cout << count << '\n';
-    return 0;
 }
