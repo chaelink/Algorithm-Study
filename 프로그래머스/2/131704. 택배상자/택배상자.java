@@ -18,7 +18,7 @@ class Solution {
                 int top = st1.pop();
                 st2.push(top);
             }
-                     
+            //뽑는 작업을 보조에서만
             if(!st2.isEmpty() && a==st2.peek()) {
                 st2.pop();
                 answer++;
