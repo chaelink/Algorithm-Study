@@ -2,23 +2,24 @@ import java.util.*;
 
 class Solution {
     public String solution(String number, int k) {
-        //인접비교만으로도 최적해 보장 -> 접두 최적성을 가지기 때문
-        StringBuilder answer = new StringBuilder();
-        
+        StringBuilder answer = new StringBuilder("");
+        int n = number.length();
         Stack<Character> st = new Stack<>();
         
-        for(char c : number.toCharArray()) {
-            while(k>0 && !st.isEmpty() && st.peek()<c ) {
+        int count = 0;
+        st.push(number.charAt(0));
+        
+        for(int i=1; i<n; i++) {
+            while(!st.isEmpty() && count<k && st.peek()<number.charAt(i)) {
                 st.pop();
-                
-                k--;
+                count++;
             }
-            st.push(c);
+            st.push(number.charAt(i));
         }
         
-        while(k>0) {
+        while(count<k) {
             st.pop();
-            k--;
+            count++;
         }
         
         for(char c : st) {
