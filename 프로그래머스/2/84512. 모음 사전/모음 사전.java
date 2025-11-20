@@ -2,32 +2,28 @@ import java.util.*;
 
 class Solution {
     int answer = 0;
-    StringBuilder s = new StringBuilder("");
-    String[] str = {"A", "E", "I", "O", "U"};
     int num = 0;
+    String[] words = new String[]{"A", "E", "I", "O", "U"};
     
     public int solution(String word) {
-        dfs(s, word);
+        dfs("", word);
         
         return answer;
     }
     
-    public void dfs(StringBuilder s, String word) {
-        if(s.toString()==word) {
+    public void dfs(String now, String word) {
+        if(now.equals(word)) {
             answer = num;
             return;
         }
         num++;
-        if(s.length()==5) {
-            return;
-        }
+
+        if(now.length()==5) return;
         
         for(int i=0; i<5; i++) {
-            s.append(str[i]);
-            dfs(s, word);
-            s.deleteCharAt(s.length()-1);
+            dfs(now + words[i], word);
+            
         }
         
     }
-    
 }
