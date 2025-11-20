@@ -2,24 +2,32 @@ import java.util.*;
 
 class Solution {
     int answer = 0;
-    HashMap<String, Integer> map = new HashMap<>();
-    String[] words = new String[]{"A", "E", "I", "O", "U"};
+    StringBuilder s = new StringBuilder("");
+    String[] str = {"A", "E", "I", "O", "U"};
+    int num = 0;
     
     public int solution(String word) {
-        dfs("");
-        return map.get(word);
+        dfs(s, word);
+        
+        return answer;
     }
     
-    public void dfs(String now) {
-        map.put(now, answer);
-        answer++;
-        
-        if(now.length()==5) return;
+    public void dfs(StringBuilder s, String word) {
+        if(s.toString()==word) {
+            answer = num;
+            return;
+        }
+        num++;
+        if(s.length()==5) {
+            return;
+        }
         
         for(int i=0; i<5; i++) {
-            dfs(now + words[i]);
-            
+            s.append(str[i]);
+            dfs(s, word);
+            s.deleteCharAt(s.length()-1);
         }
         
     }
+    
 }
