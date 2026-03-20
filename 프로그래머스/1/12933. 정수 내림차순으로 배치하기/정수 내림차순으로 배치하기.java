@@ -9,6 +9,7 @@ class Solution {
         
         for(String s : list) {
             sb.append(s);
+            
         }
         
         return Long.parseLong(sb.reverse().toString());
