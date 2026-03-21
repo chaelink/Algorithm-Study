@@ -18,7 +18,7 @@ class Solution {
         return answer;
     }
     
-    //2진수 변환 함수
+    //2진수 변환
     public int cal(int n) {
         int answer = 0;
         while(n > 0) {
