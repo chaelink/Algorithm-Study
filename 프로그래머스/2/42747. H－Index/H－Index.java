@@ -3,23 +3,26 @@ import java.util.*;
 class Solution {
     public int solution(int[] citations) {
         int answer = 0;
-        int n = citations.length;
         Arrays.sort(citations);
-        int maxh = citations[n-1];
-        for(int i=maxh; i>=1; i--) {
-            int big=0; int small =0;
+        int n = citations.length;
+        int h = citations[n-1];
+        //System.out.println(h);
+        
+        for(int i=h; i>=0; i--) {
+            int l = 0;
+            int u = 0;
             for(int j=0; j<n; j++) {
                 if(citations[j]>=i) {
-                    big++;
+                    u++;
                 } else {
-                    small++;
+                    l++;
                 }
             }
-            if(big>=i && small<=i) {
-                return i;
-            }
-            
+            //System.out.println(u);
+            //System.out.println(l);
+            if(u>=i && l<=i) return i;
         }
+        
         return answer;
     }
 }
