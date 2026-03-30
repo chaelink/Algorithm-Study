@@ -1,54 +1,44 @@
 import java.util.*;
 
 class Solution {
-    class Word {
-        String word;
-        int count;
-        Word(String word, int count){
-            this.word = word;
-            this.count = count;
-        }
-    }
-    int n;
     public int solution(String begin, String target, String[] words) {
         int answer = 0;
-        HashSet<String> visited = new HashSet<>();
-        Queue<Word> q = new ArrayDeque<>();
-        n = begin.length();
-        
-        visited.add(begin);
-        q.add(new Word(begin,0));
-        //int dist = 0;
+        //방문 체크
+        int n = words.length;
+        int[] visited = new int[n];
+        Queue<String> q = new ArrayDeque<>();
+        q.add(begin);
         
         while(!q.isEmpty()) {
-            Word w = q.remove();
-            
-            String s = w.word;
-            if(s.equals(target)) {
-                return w.count;
-            }
-            
-            for(int i=0; i<words.length; i++) {
-                if(wordCheck(s,words[i])==1 && !visited.contains(words[i])) {
-                    q.add(new Word(words[i],w.count+1));
-                    visited.add(words[i]);
-                    System.out.println(words[i]);
+            int size = q.size();
+            for(int i=0; i<size; i++) {
+                String str = q.poll();
+                //System.out.println(str);
+                if(str.equals(target)) return answer;
+                
+                for(int k=0; k<n; k++) {
+                    if(visited[k]==0 && check(str, words[k])) {
+                        visited[k]=1;
+                        q.add(words[k]);
+                        
+                    }
                 }
             }
-           //dist++; 
+            answer++;
         }
         
-        return answer;
+        return 0;
     }
     
-    public int wordCheck(String a, String b) {
-        int diff=0;
+    boolean check(String a, String b) {
+        int n = a.length();
+        int t = 0;
         for(int i=0; i<n; i++) {
             if(a.charAt(i) != b.charAt(i)) {
-                diff++;
+                t++;
             }
+            if(t==2) return false;
         }
-        return diff;
+        return true;
     }
-    
 }
