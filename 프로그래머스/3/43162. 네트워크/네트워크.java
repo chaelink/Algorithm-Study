@@ -4,22 +4,24 @@ class Solution {
     int[] visited;
     public int solution(int n, int[][] computers) {
         int answer = 0;
-        int n2 = computers.length;
-        visited = new int[n2];
+        visited = new int[n];
         
-        for(int i=0; i<n2; i++) {
+        for(int i=0; i<n; i++) {
             if(visited[i]==0) {
-                dfs(i, computers, n2);
+                visited[i]=1;
+                dfs(computers, i);
                 answer++;
             }
         }
         return answer;
     }
-    void dfs(int idx, int[][] computers, int n2) {
-        visited[idx] = 1;
-        for(int i=0; i<n2; i++) {
-            if(computers[idx][i]==1 && visited[i]==0) {
-                dfs(i, computers, n2);
+    
+    void dfs(int[][] computers, int k) {
+        int n = computers.length;
+        for(int i=0; i<n; i++) {
+            if(computers[k][i]==1 && visited[i]==0) {
+                visited[i]=1;
+                dfs(computers,i);
             }
         }
     }
