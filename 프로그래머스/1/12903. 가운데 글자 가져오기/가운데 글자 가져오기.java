@@ -1,15 +1,12 @@
-import java.util.*;
-
 class Solution {
     public String solution(String s) {
-        StringBuilder answer = new StringBuilder();
+        String answer = "";
         int n = s.length();
-        if(s.length()%2==0) {
-            answer.append(s.charAt(n/2-1));
-            answer.append(s.charAt(n/2));
+        if(n%2==0) {
+            answer = s.substring(n/2-1,n/2+1);
         } else {
-            answer.append(s.charAt(n/2));
+            answer = String.valueOf(s.charAt(n/2));
         }
-        return answer.toString();
+        return answer;
     }
 }
