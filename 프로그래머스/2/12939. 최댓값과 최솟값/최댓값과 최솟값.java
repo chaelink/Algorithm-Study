@@ -2,20 +2,17 @@ import java.util.*;
 
 class Solution {
     public String solution(String s) {
-        StringBuilder answer = new StringBuilder("");
         String[] str = s.split(" ");
-        int[] arr = new int[str.length];
-        
-        for(int i=0; i<str.length; i++) {
-            arr[i] = Integer.parseInt(str[i]);
+        int n = str.length;
+        int[] arr = new int[n];
+        for(int i=0; i<n; i++) {
+            arr[i] = Integer.valueOf(str[i]);
         }
         Arrays.sort(arr);
-        int minn = arr[0];
-        int maxx = arr[arr.length-1];
-        
-        answer.append(minn);
+        StringBuilder answer = new StringBuilder("");
+        answer.append(arr[0]);
         answer.append(" ");
-        answer.append(maxx);
+        answer.append(arr[n-1]);
         return answer.toString();
     }
 }
