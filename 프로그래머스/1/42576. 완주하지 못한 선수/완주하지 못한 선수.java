@@ -3,18 +3,19 @@ import java.util.*;
 class Solution {
     public String solution(String[] participant, String[] completion) {
         String answer = "";
-        HashMap<String, Integer> map = new HashMap<>();
-        for(String name : participant) {
-            map.put(name, map.getOrDefault(name,0)+1);
+        Map<String, Integer> name = new HashMap<>();
+        for(String s : participant) {
+            name.put(s, name.getOrDefault(s,0)+1);
         }
         
-        for(String name : completion) {
-            map.put(name, map.get(name)-1);
+        for(String s : completion) {
+            name.put(s, name.get(s)-1);
         }
         
-        for(Map.Entry<String, Integer> entry : map.entrySet()) {
-            if(entry.getValue()==1) {
-                answer = entry.getKey();
+        for(String s : name.keySet()) {
+            if(name.get(s)==1) {
+                answer = s;
+                break;
             }
         }
         
