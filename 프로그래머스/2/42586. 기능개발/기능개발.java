@@ -1,37 +1,29 @@
 import java.util.*;
-
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
         
-        List<Integer> list = new ArrayList<>();
-        int n = progresses.length;
-        //각 기능의 개발속도는 다름
-        //100개 이하
-        //
-        int i = 0;
-        while(i<n) {
-            int temp = 0;
-            for(int i2=i; i2<n; i2++) {
-                progresses[i2] += speeds[i2];
-            }
-            for(int i2=i; i2<n; i2++) {
-                if(progresses[i2]>=100) {
-                    temp++;
-                } else {
-                    break;
+        List<Integer> ans = new ArrayList<>();
+        int idx = 0;
+        int n = speeds.length;
+        while(idx < n) {
+            if(progresses[idx]>=100) {
+                Deque<Integer> q = new ArrayDeque<>();
+                for(int i=idx; i<n; i++) {
+                    if(progresses[i]>=100) q.add(i);
+                    else break;
                 }
+                ans.add(q.size());
+                idx += q.size();
             }
-            if(temp>0) {
-                list.add(temp);
-                i += temp;
+            
+            for(int i=idx; i<n; i++) {
+                progresses[i] += speeds[i];
             }
         }
         
-        int[] answer = new int[list.size()];
-        int a = 0;
-        for(int num :list) {
-            answer[a] = num;
-            a++;
+        int[] answer = new int[ans.size()];
+        for(int i=0; i<ans.size(); i++) {
+            answer[i] = ans.get(i);
         }
         
         
