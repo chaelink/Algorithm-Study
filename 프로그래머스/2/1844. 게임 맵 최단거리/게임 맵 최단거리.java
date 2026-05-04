@@ -1,37 +1,36 @@
 import java.util.*;
 
+//최단거리는 bfs
 class Solution {
+    int[] dx = {0,0,1,-1};
+    int[] dy = {1,-1,0,0};
     public int solution(int[][] maps) {
-        int answer = -1;
-        int n = maps.length;
+        int n =  maps.length;
         int m = maps[0].length;
-        int[] dx = {1,-1,0,0};
-        int[] dy = {0,0,1,-1};
-        boolean[][] visited = new boolean[n][m];
-        Queue<int[]> q = new ArrayDeque<>();
+        //int answer = 0;
+        int[][] visited = new int[n][m];
+        visited[0][0] = 1;
         
-        //bfs로 최단거리 구하기
-        q.add(new int[]{0,0,1});
-        visited[0][0] = true;
+        Queue<Integer[]> q = new LinkedList<>();
+        q.add(new Integer[]{0,0,0});
         
         while(!q.isEmpty()) {
-            int[] now = q.remove();
-            int x = now[0], y=now[1], road = now[2];
-            if(x==n-1 && y==m-1) {
-                return road;
+            Integer[] now = q.remove();
+            if(now[0]==n-1 && now[1]==m-1) {
+                return now[2]+1;
             }
-            
             for(int i=0; i<4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-                if(nx>=0 && nx<n && ny>=0 && ny<m &&maps[nx][ny]==1 && !visited[nx][ny]) {
-                    q.add(new int[] {nx,ny,road+1});
-                    visited[nx][ny] = true;
+                int nx = now[0] + dx[i];
+                int ny = now[1] + dy[i];
+                if(nx>=0 && nx<n && ny>=0 && ny<m) {
+                    if(visited[nx][ny]==0 && maps[nx][ny]==1) {
+                        visited[nx][ny] = 1;
+                        q.add(new Integer[]{nx,ny,now[2]+1});
+                    }
                 }
             }
         }
         
-        
-        return answer;
+        return -1;
     }
 }
