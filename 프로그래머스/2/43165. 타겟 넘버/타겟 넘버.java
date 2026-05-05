@@ -1,27 +1,26 @@
 import java.util.*;
-import java.io.*;
 
 class Solution {
     int answer = 0;
+    int n = 0;
     public int solution(int[] numbers, int target) {
-        int n = numbers.length;
+        n = numbers.length;
         
-        
-        dfs(numbers, n, 0, 0, target);
+        dfs(0, 0, numbers, target);
         
         return answer;
     }
     
-    public void dfs(int[] numbers, int n, int idx, int a, int target) {
-        if(idx ==  n) {
-            if(a == target) {
+    void dfs(int idx, int num, int[] numbers, int target) {
+        if(idx==n) {
+            if(num == target) {
                 answer++;
             }
             return;
         }
-        int nidx = idx+1;
-        dfs(numbers, n, nidx, a+numbers[idx], target);
-        dfs(numbers, n, nidx, a-numbers[idx], target);
+        
+        dfs(idx+1, num + numbers[idx], numbers, target);
+        dfs(idx+1, num - numbers[idx], numbers, target);
         
     }
 }
