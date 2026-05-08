@@ -1,11 +1,10 @@
 import java.util.*;
-
 class Solution {
     public String solution(int[] numbers) {
         StringBuilder answer = new StringBuilder("");
         int n = numbers.length;
-        
         String[] str = new String[n];
+        
         for(int i=0; i<n; i++) {
             str[i] = numbers[i]+"";
         }
@@ -16,10 +15,10 @@ class Solution {
             return "0";
         }
         
-        for(int i=0; i<n; i++) {
-            answer.append(str[i]);
-        }
+        for(String s : str) {
+            answer.append(s);
+        }  
         
         return answer.toString();
     }
-} 
+}
