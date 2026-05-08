@@ -1,21 +1,20 @@
 import java.util.*;
-
 class Solution {
     public int[] solution(int[] array, int[][] commands) {
+        
         int n = commands.length;
         int[] answer = new int[n];
-        int m = 0;
         
-        for(int[] a : commands) {
-            int[] temp = new int[a[1] - a[0]+1];
-            int idx =0;
-            for(int i=a[0]; i<=a[1]; i++) { 
-                temp[idx] = array[i-1];
-                idx++;
+        for(int idx=0; idx<n; idx++) {
+            int i = commands[idx][0];
+            int j = commands[idx][1];
+            int k = commands[idx][2];
+            List<Integer> list = new ArrayList<>();
+            for(int q = i-1; q<j; q++) {
+                list.add(array[q]);
             }
-            Arrays.sort(temp);
-            answer[m] = temp[a[2] -1];
-            m++;
+            Collections.sort(list);
+            answer[idx] = list.get(k-1);
         }
         
         return answer;
