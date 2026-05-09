@@ -1,28 +1,26 @@
 import java.util.*;
-
 class Solution {
     public int[] solution(int[] arr) {
-        
+        int[] answer = {};
         if(arr.length == 1) {
-            int[] answer = new int[]{-1};
-            return answer;
-        } else {
-            int min = Integer.MAX_VALUE;
-            for(int i=0; i<arr.length; i++) {
-                min = Math.min(min, arr[i]);
-            }
-            int[] answer = new int[arr.length-1];
-            int idx = 0;
-            
-            for(int i=0; i<arr.length; i++) {
-                if(arr[i]==min){
-                    continue;
-                } else {
-                    answer[idx] = arr[i];
-                    idx++;
-                }
-            }
+            answer = new int[1];
+            answer[0] = -1;
             return answer;
         }
+        int n = arr.length;
+        answer = new int[n-1];
+        int m = Integer.MAX_VALUE;
+        for(int i : arr) {
+            if(i<m) m = i;
+        }
+        int idx = 0;
+        for(int i : arr) {
+            if(i != m) {
+                answer[idx] = i;
+                idx++;
+            }
+        }
+        
+        return answer;
     }
 }
