@@ -4,40 +4,32 @@ class Solution {
     public int solution(int[] schedules, int[][] timelogs, int startday) {
         int answer = 0;
         int n = schedules.length;
+        int[] arr = new int[n];
         
+        //1. 출근 인정 시각 분 단위로 치환해서 저장
         for(int i=0; i<n; i++) {
-            int num = schedules[i];
-            int h = num /100;
-            int m = num %100;
-            int newo = h*60 + m + 10;
-            schedules[i] = newo;
+            schedules[i] = schedules[i]/100*60 + schedules[i]%100 + 10;
         }
         
-        int[] check = new int[n];
-        //상품을 받을 직원이 몇 명인지
-        //오늘부터 일주일 동안
-        
+        //for문 반복
         for(int i=0; i<7; i++) {
-            //System.out.println(startday);
             if(startday==6 || startday==7) {
-                //System.out.println("p");
-                
-                startday %=7;startday +=1;
+                startday = (startday%7)+1;
                 continue;
             }
-            //System.out.println("d");
+            startday = (startday%7)+1;
             for(int j=0; j<n; j++) {
-                int now = timelogs[j][i]/100*60 + timelogs[j][i]%100;
-                if(now<=schedules[j]) {
-                    check[j]++;
+                int num = timelogs[j][i];
+                num = num/100*60 + num%100;
+                
+                if(num<= schedules[j]) {
+                    arr[j]++;
                 }
             }
-            startday +=1;
-            startday %=7;
         }
         
         for(int i=0; i<n; i++) {
-            if(check[i]==5) answer++;
+            if(arr[i]==5) answer++;
         }
         
         return answer;
