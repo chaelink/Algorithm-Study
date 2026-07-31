@@ -1,55 +1,46 @@
 import java.util.*;
-
 class Solution {
-    int n;
-    int[] num;
-    int[] visited;
-    List<Integer> now = new ArrayList<>();
+    int[] visit;
+    int answer = 0;
     Set<Integer> set = new HashSet<>();
-    
     public int solution(String numbers) {
-        n = numbers.length();
-        num = new int[n];
-        visited = new int[n];
         
-        for(int i=0; i<n; i++) {
-            int a = numbers.charAt(i) - '0' ;
-            num[i] = a;
-        }
+        //길이 최대가 7이므로 완전탐색 가능하다
+        String[] number = numbers.split("");
+        int n = numbers.length();
+        visit = new int[n];
+        StringBuilder sb = new StringBuilder("");
         
-        dfs();
+        dfs(sb, number);
+        
         return set.size();
     }
     
-    public void dfs() {
-        sosu(now);
+    void dfs(StringBuilder sb, String[] number) {
+        if(sb.length()>0) {
+            if(check(sb.toString())) set.add(Integer.valueOf(sb.toString()));
+        }
         
-        for(int i=0; i<n; i++) {
-            if(visited[i]==0) {
-                now.add(num[i]);
-                visited[i] = 1;
-                dfs();
-                visited[i] = 0;
-                now.remove(now.size()-1);
+        for(int i=0; i<number.length; i++) {
+            if(visit[i]==0) {
+                visit[i]=1;
+                sb.append(number[i]);
+                dfs(sb, number);
+                sb.deleteCharAt(sb.length()-1);
+                visit[i]=0;
             }
         }
     }
     
-    public void sosu(List<Integer> now) {
-        int n = now.size();
-        if(n==0) return;
+    boolean check(String str) {
+        int n = Integer.valueOf(str);
+        if(n<=1) return false;
         
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i<n; i++) {
-            sb.append(now.get(i));
+        for(int i=2; i<n; i++) {
+            if(n%i==0) return false;
         }
-        int a = Integer.parseInt(sb.toString());
-        
-        if(a<=1) return;
-        
-        for(int i=2; i<a; i++) {
-            if(a % i == 0) return;
-        }
-        set.add(a);
+        return true;
     }
+    
+    
 }
