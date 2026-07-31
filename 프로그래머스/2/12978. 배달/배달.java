@@ -1,43 +1,56 @@
 import java.util.*;
+class Node implements Comparable<Node> {
+    int to;
+    int cost;
+    
+    public Node(int to, int cost) {
+        this.to = to;
+        this.cost = cost;
+    }
+    
+    @Override
+    public int compareTo(Node o) {
+        return this.cost - o.cost;
+    }
+}
 class Solution {
     public int solution(int N, int[][] road, int K) {
         int answer = 0;
 
-        List<int[]>[] graph = new ArrayList[N+1];
-        for(int i=1; i<=N; i++) graph[i] = new ArrayList<>();
-        for(int[] a : road) {
-            graph[a[0]].add(new int[]{a[1], a[2]});
-            graph[a[1]].add(new int[]{a[0], a[2]});
+        //1번마을에서 각 마을로 음식 배달
+        List<Node>[] list =  new ArrayList[N+1];
+        for(int i=1; i<=N; i++) {
+            list[i] = new ArrayList<>();
         }
-
+        
+        for(int[] r : road) {
+            int a = r[0]; int b = r[1]; int c = r[2];
+            list[a].add(new Node(b,c));
+            list[b].add(new Node(a,c));
+        }
+        
+        //결과 저장 배열
         int[] result = new int[N+1];
         Arrays.fill(result, Integer.MAX_VALUE);
-
-        // {비용, 마을번호} 비용 기준 오름차순
-        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[0] - o2[0]);
-        pq.add(new int[]{0, 1});
         result[1] = 0;
-
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.add(1);
+        
         while(!pq.isEmpty()) {
-            int[] curr = pq.poll();
-            int cost = curr[0];
-            int idx = curr[1];
-
-            if(result[idx] < cost) continue; // 이미 더 싸게 방문
-
-            for(int[] next : graph[idx]) {
-                int nextIdx = next[0];
-                int nextCost = cost + next[1];
-
-                if(result[nextIdx] > nextCost) {
-                    result[nextIdx] = nextCost;
-                    pq.add(new int[]{nextCost, nextIdx});
+            int start = pq.poll();
+            
+            for(Node n : list[start]) {
+                if(result[n.to] <= result[start] + n.cost) {
+                    continue;
+                } else {
+                    result[n.to] = result[start] + n.cost;
+                    pq.add(n.to);
                 }
             }
         }
-
+        
         for(int i=1; i<=N; i++) {
-            if(result[i] <= K) answer++;
+            if(result[i]<=K) answer++;
         }
 
         return answer;
