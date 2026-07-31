@@ -1,98 +1,67 @@
 import java.util.*;
-
 class Solution {
     public int[] solution(int[] fees, String[] records) {
         
-        //차량번호, 분 해시맵으로 관리
-        HashMap<String, Integer> map = new HashMap<>();
+        //fees 기본시간, 기본요금, 단위시간, 단위요금
         
-        //각 차량별 출입 관리(차량번호, 시간)
-        HashMap<String,String> rec = new HashMap<>();
+        //입출차 기록
+        Map<String, Integer> map = new HashMap<>();
         
-        //입출 전체 확인
-        for(int i=0; i<records.length; i++) {
-            String[] str = records[i].split(" ");
-            String car = str[1];
-            String time = str[0];
-            
-            if(rec.containsKey(car)) {
-                String in = rec.get(car);
-                int afterCalc = calc(in, time);
-                if(map.containsKey(car)) {
-                    int before = map.get(car);
-                    map.put(car, before+afterCalc);
-                } else {
-                    map.put(car, afterCalc);
-                }
-                rec.remove(car);
+        //최종 차량, 분 기록
+        TreeMap<String,Integer> tmap = new TreeMap<>();
+        
+        for(String str : records) {
+            String[] word = str.split(" ");
+            String[] time = word[0].split(":");
+            int minute = Integer.valueOf(time[0])*60 + Integer.valueOf(time[1]);
+            if(word[2].equals("IN")) {
+                map.put(word[1], minute);
             } else {
-                rec.put(car, time);
+                int in_time = map.get(word[1]);
+                map.remove(word[1]);
+                int m = minute - in_time;
+                tmap.put(word[1], tmap.getOrDefault(word[1],0)+m);               
+            } 
+        }
+        
+        if(map.size()>0) {
+            for(String str : map.keySet()) {
+                int out_m = 23*60 + 59;
+                int m = out_m - map.get(str);
+                tmap.put(str, tmap.getOrDefault(str,0)+m);
+                // if(m > fees[0]) {
+                //     fee += fees[1];
+                //     m -= fees[0];
+                //     int r = m/fees[2];
+                //     if(m%fees[2]>0) r++;
+                //     fee += r*fees[3];
+                //     tmap.put(str, tmap.getOrDefault(str,0)+fee);
+                // } else {
+                //     fee += fees[1];
+                //     tmap.put(str, tmap.getOrDefault(str,0)+fee);
+                // }
             }
         }
         
-        //입차만 하고 출차하지 않은 차 계산
-        for(Map.Entry<String, String> entry : rec.entrySet()) {
-            String car = entry.getKey();
-            String in = entry.getValue();
-            int time = calc(in, "23:59");
-            if(map.containsKey(car)) {
-                int before = map.get(car);
-                map.put(car, before+time);
+        int[] answer = new int[tmap.size()];
+        int idx=0;
+        for(Map.Entry<String, Integer> entry : tmap.entrySet()) {
+            int m = entry.getValue();
+            int fee=0;
+            if(m > fees[0]) {
+                fee += fees[1];
+                m -= fees[0];
+                int r = m/fees[2];
+                if(m%fees[2]>0) r++;
+                fee += r*fees[3];
+                answer[idx] = fee;
             } else {
-                map.put(car, time);
+                fee += fees[1];
+                answer[idx] = fee;
             }
-        }
-        
-        //차량 번호 작은 순 정렬
-        List<String> carList = new ArrayList<>(map.keySet());
-        Collections.sort(carList);
-        List<Integer> answer = new LinkedList<>();
-        
-        //시간 계산 완료, 이제 비용 계산
-        for(String car : carList) {
-            int time = map.get(car);
-            if(time<=fees[0]) {
-                answer.add(fees[1]);
-            } else {
-                int a = time - fees[0];
-                int mok = 0;
-                if(a%fees[2]!=0) {
-                    mok = a/fees[2] + 1;
-                } else {
-                    mok = a/fees[2];
-                }
-                answer.add(fees[1] + mok*fees[3]);
-            }
-        }
-        //list -> 배열
-        int n = answer.size();
-        int[] ans = new int[n];
-        int idx = 0;
-        for(Integer i : answer) {
-            ans[idx] = i;
             idx++;
         }
-        return ans;
-    }
-    
-    public int calc(String in, String out) {
-        String[] input = in.split(":");
-        int in1 = Integer.parseInt(input[0]);
-        int in2 = Integer.parseInt(input[1]);
-        
-        String[] output = out.split(":");
-        int out1 = Integer.parseInt(output[0]);
-        int out2 = Integer.parseInt(output[1]);
-        
-        if(in1==out1) {
-            return out2 - in2;
-        } else if(out2>=in2) {
-            int si = out1 - in1;
-            return si*60 + out2-in2;
-        } else {
-            int si = out1 - in1 -1;
-            int bun = (60+out2) - in2;
-            return si*60 + bun;
-        }
+
+        return answer;
     }
 }
