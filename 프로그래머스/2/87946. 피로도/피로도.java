@@ -1,33 +1,28 @@
 import java.util.*;
 class Solution {
-    int answer = 0;
+    int n;
     int[] visit;
+    int answer=0;
     public int solution(int k, int[][] dungeons) {
         
-        //던전이 8개 이하다 -> 2의n제곱 시간 복잡도인 완전탐색이 가능하다
-        visit = new int[dungeons.length];
-        for(int i=0; i<dungeons.length; i++) {
-            if(k>=dungeons[i][0]) {
-                visit[i]=1;
-                k -= dungeons[i][1];
-                dfs(k,1,dungeons);
-                k += dungeons[i][1];
-                visit[i] = 0; 
-            }
-        }
+        //던전이 8개
+        n = dungeons.length;
+        visit = new int[n];
+        
+        
+        dfs(k, dungeons, 0);
+        
         
         return answer;
     }
     
-    void dfs(int k, int n, int[][] dungeons) {
-        answer = Math.max(answer, n);
+    void dfs(int k, int[][] dungeons, int count) {
+        answer = Math.max(answer, count);
         
-        for(int i=0; i<dungeons.length; i++) {
-            if(visit[i]==0 && k>=dungeons[i][0]) {
-                visit[i]=1;
-                k -= dungeons[i][1];
-                dfs(k,n+1, dungeons);
-                k += dungeons[i][1];
+        for(int i=0; i<n; i++) {
+            if(visit[i]==0 && k >= dungeons[i][0]) {
+                visit[i] = 1;
+                dfs(k-dungeons[i][1], dungeons, count+1);
                 visit[i] = 0;
             }
         }
