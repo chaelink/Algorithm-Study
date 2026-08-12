@@ -1,46 +1,44 @@
 import java.util.*;
 class Solution {
-    int[] visit;
-    int answer = 0;
+    //최종 소수를 저장할 셋
     Set<Integer> set = new HashSet<>();
+    int[] visit;
+    int n;
+    String[] arr;
     public int solution(String numbers) {
         
-        //길이 최대가 7이므로 완전탐색 가능하다
-        String[] number = numbers.split("");
-        int n = numbers.length();
+        n = numbers.length();
         visit = new int[n];
-        StringBuilder sb = new StringBuilder("");
+        arr = numbers.split("");
         
-        dfs(sb, number);
+        StringBuilder sb = new StringBuilder("");
+        dfs(sb);
         
         return set.size();
     }
     
-    void dfs(StringBuilder sb, String[] number) {
+    void dfs(StringBuilder sb) {
         if(sb.length()>0) {
-            if(check(sb.toString())) set.add(Integer.valueOf(sb.toString()));
+            int num = Integer.parseInt(sb.toString());
+            if(sosu(num)) set.add(num);
         }
         
-        for(int i=0; i<number.length; i++) {
+        for(int i=0; i<n; i++) {
             if(visit[i]==0) {
-                visit[i]=1;
-                sb.append(number[i]);
-                dfs(sb, number);
+                visit[i] = 1;
+                sb.append(arr[i]);
+                dfs(sb);
                 sb.deleteCharAt(sb.length()-1);
-                visit[i]=0;
+                visit[i] = 0;
             }
         }
     }
     
-    boolean check(String str) {
-        int n = Integer.valueOf(str);
+    boolean sosu(int n) {
         if(n<=1) return false;
-        
-        for(int i=2; i<n; i++) {
+        for(int i=2; i*i<=n; i++) {
             if(n%i==0) return false;
         }
         return true;
     }
-    
-    
 }
