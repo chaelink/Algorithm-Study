@@ -4,17 +4,16 @@ class Solution {
         int answer = 0;
         for(int i=1; i<=n; i++) {
             int sum = 0;
-            boolean success=true;
+         
             for(int j=i; j<=n; j++) {
                 sum += j;
-                if(sum>n) {
-                    success = false;
+                if(sum>n) {               
                     break;
                 } else if(sum ==n) {
+                    answer++;
                     break;
                 }
             }
-            if(success) answer++;
         }
           
         return answer;
