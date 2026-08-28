@@ -1,38 +1,55 @@
 import java.util.*;
-
 class Solution {
+    int answer = Integer.MAX_VALUE;
+    int[][] arr;
+    int[] visit;
+    int count = 1;
     
-    List<List<Integer>> arr = new ArrayList<>();
-    int answer;
-
     public int solution(int n, int[][] wires) {
-        answer = n;
-        for(int i=0; i<=n; i++) {
-            arr.add(new ArrayList<>());
-        }
-        for(int i=0; i<wires.length; i++) {
-            int a = wires[i][0];
-            int b = wires[i][1];
-            arr.get(a).add(b);
-            arr.get(b).add(a);
+        //arr 작성
+        arr = new int[n+1][n+1];
+        for(int[] w : wires) {
+            int a = w[0];
+            int b = w[1];
+            arr[a][b] = 1;
+            arr[b][a] = 1;
         }
         
-        boolean[] visited = new boolean[n+1];
-        dfs(visited, 1, n);
+        for(int[] w : wires) {
+            int a = w[0];
+            int b = w[1];
+            arr[a][b] = 0;
+            arr[b][a] = 0;
+            visit = new int[n+1];
+            int idx=0;
+            int[] min = new int[2];
+            for(int i=1; i<=n; i++) {
+                if(visit[i]==0) {
+                    visit[i] =1;
+                    dfs(n,i);
+                    min[idx]= count;
+                    count=1; idx++; 
+                }
+            }
+            answer = Math.min(answer, Math.abs(min[0]-min[1]));
+            arr[a][b] = 1;
+            arr[b][a] = 1;
+            
+        }
+        
         
         return answer;
     }
     
-    public int dfs(boolean[] visited, int cur, int n) {
-        int count = 1;
-        visited[cur] = true;
+    void dfs(int n, int k) {
         
-        for(int i:arr.get(cur)) {
-            if(!visited[i]) {
-                count += dfs(visited, i, n);
+        for(int i=1; i<=n; i++) {
+            if(visit[i]==0 && arr[i][k]==1) {
+                visit[i] = 1;
+                count++;
+                dfs(n,i);
             }
         }
-        answer = Math.min(answer, Math.abs(n-count*2));
-        return count;
     }
+    
 }
