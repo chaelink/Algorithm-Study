@@ -1,53 +1,51 @@
 import java.util.*;
 class Solution {
-    int answer = Integer.MAX_VALUE;
     int[][] arr;
     int[] visit;
-    int count = 1;
-    
+    int count=0;
     public int solution(int n, int[][] wires) {
-        //arr 작성
+        int answer = n;
+        
+        //arr에 연결 저장
         arr = new int[n+1][n+1];
         for(int[] w : wires) {
-            int a = w[0];
-            int b = w[1];
-            arr[a][b] = 1;
-            arr[b][a] = 1;
+            int a = w[0]; int b = w[1];
+            arr[a][b] = 1; arr[b][a] = 1;
         }
         
+        
+        //와이어 하나씩 끊어가면서
+        //1번부터 n번까지 순회
         for(int[] w : wires) {
-            int a = w[0];
-            int b = w[1];
-            arr[a][b] = 0;
-            arr[b][a] = 0;
+            int a = w[0]; int b = w[1];
+            arr[a][b] = 0; arr[b][a] = 0;
+            
             visit = new int[n+1];
-            int idx=0;
-            int[] min = new int[2];
+            count =0;
             for(int i=1; i<=n; i++) {
                 if(visit[i]==0) {
-                    visit[i] =1;
-                    dfs(n,i);
-                    min[idx]= count;
-                    count=1; idx++; 
+                    visit[i]=1;
+                    count++;
+                    dfs(i,n);
+                    int cha = Math.abs(n - 2*count);
+                    answer = Math.min(answer, cha);
+                    break;
                 }
             }
-            answer = Math.min(answer, Math.abs(min[0]-min[1]));
-            arr[a][b] = 1;
-            arr[b][a] = 1;
             
+            arr[a][b] = 1; arr[b][a] = 1;
         }
-        
         
         return answer;
     }
     
-    void dfs(int n, int k) {
+    void dfs(int k, int n) {
         
         for(int i=1; i<=n; i++) {
-            if(visit[i]==0 && arr[i][k]==1) {
-                visit[i] = 1;
+            if(visit[i]==0 && arr[k][i]==1) {
+                visit[i]=1;
                 count++;
-                dfs(n,i);
+                dfs(i,n);
             }
         }
     }
