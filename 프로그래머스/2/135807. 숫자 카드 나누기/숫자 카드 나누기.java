@@ -9,10 +9,10 @@ class Solution {
         List<Integer> listB = new ArrayList<>();
         
         listA.add(arrayA[0]);
-        for(int i=2; i<arrayA[0]; i++) {
+        for(int i=2; i*i<arrayA[0]; i++) {
             if(arrayA[0] % i ==0) {
                 listA.add(i);
-               //System.out.println(i);
+                listA.add(arrayA[0] / i);
             }
         }
         
