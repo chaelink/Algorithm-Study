@@ -1,28 +1,45 @@
-import java.util.*;
-
 class Solution {
     public int[] solution(int[] sequence, int k) {
-        int[] answer = {0,1000000};
-        int n = sequence.length;
-        
-        int start = 0;
-        int total = 0;
-        
-        for(int end=0; end<n; end++) {
-            total += sequence[end];
-            
-            while(total>k) {
-                total -= sequence[start];
-                start++;
-            }
-            if(total == k) {
-                if((end-start) < (answer[1] - answer[0]) ) {
-                    answer[0] = start;
-                    answer[1] = end;
+
+        int left = 0;
+        int right = 0;
+        int sum = sequence[0];
+
+        int bestLeft = 0;
+        int bestRight = sequence.length - 1;
+        int minLength = sequence.length;
+
+        while (left <= right && right < sequence.length) {
+
+            // 정답 후보 발견
+            if (sum == k) {
+                int length = right - left + 1;
+
+                if (length < minLength) {
+                    minLength = length;
+                    bestLeft = left;
+                    bestRight = right;
                 }
+
+                // 더 짧은 구간 탐색
+                sum -= sequence[left];
+                left++;
+
+            // 합이 작으면 오른쪽 확장
+            } else if (sum < k) {
+                right++;
+
+                if (right < sequence.length) {
+                    sum += sequence[right];
+                }
+
+            // 합이 크면 왼쪽 축소
+            } else {
+                sum -= sequence[left];
+                left++;
             }
         }
-      
-        return answer;
+
+        return new int[]{bestLeft, bestRight};
     }
 }
