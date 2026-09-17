@@ -15,7 +15,7 @@ class Solution {
                 //업데이트
                 if((r-l) < (bestr - bestl)) {
                     bestr = r; bestl = l;
-                } else if((r-1) == (bestr - bestl)) {
+                } else if((r-l) == (bestr - bestl)) {
                     if(l < bestl) {bestr = r; bestl = l;}
                 }
                 
@@ -25,12 +25,12 @@ class Solution {
             }
             
             //조정
-            if(sum < k) {
+            else if(sum < k) {
                 r++;
                 if(r<sequence.length) sum += sequence[r];  
             }
             
-            if(sum >k) {
+            else {
                 sum -= sequence[l];
                 l++;
             }
