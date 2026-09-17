@@ -1,45 +1,44 @@
+import java.util.*;
 class Solution {
     public int[] solution(int[] sequence, int k) {
-
-        int left = 0;
-        int right = 0;
+        int[] answer = new int[2];
+        //길이가 짧고, 인덱스가 작은
+        int bestl = 0; 
+        int bestr = sequence.length-1;
+        int l = 0;
+        int r = 0;
         int sum = sequence[0];
-
-        int bestLeft = 0;
-        int bestRight = sequence.length - 1;
-        int minLength = sequence.length;
-
-        while (left <= right && right < sequence.length) {
-
-            // 정답 후보 발견
-            if (sum == k) {
-                int length = right - left + 1;
-
-                if (length < minLength) {
-                    minLength = length;
-                    bestLeft = left;
-                    bestRight = right;
+        
+        while(l<=r && r<sequence.length) {
+            //부힙
+            if(sum == k) {
+                //업데이트
+                if((r-l) < (bestr - bestl)) {
+                    bestr = r; bestl = l;
+                } else if((r-1) == (bestr - bestl)) {
+                    if(l < bestl) {bestr = r; bestl = l;}
                 }
-
-                // 더 짧은 구간 탐색
-                sum -= sequence[left];
-                left++;
-
-            // 합이 작으면 오른쪽 확장
-            } else if (sum < k) {
-                right++;
-
-                if (right < sequence.length) {
-                    sum += sequence[right];
-                }
-
-            // 합이 크면 왼쪽 축소
-            } else {
-                sum -= sequence[left];
-                left++;
+                
+                //조정
+                r++;
+                if(r<sequence.length) sum += sequence[r];            
+            }
+            
+            //조정
+            if(sum < k) {
+                r++;
+                if(r<sequence.length) sum += sequence[r];  
+            }
+            
+            if(sum >k) {
+                sum -= sequence[l];
+                l++;
             }
         }
-
-        return new int[]{bestLeft, bestRight};
+        
+        answer[0] = bestl;
+        answer[1] = bestr;
+        
+        return answer;
     }
 }
