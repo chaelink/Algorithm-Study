@@ -2,20 +2,26 @@ import java.util.*;
 class Solution {
     public int solution(int n) {
         int answer = 0;
-        for(int i=1; i<=n; i++) {
-            int sum = 0;
-         
-            for(int j=i; j<=n; j++) {
-                sum += j;
-                if(sum>n) {               
-                    break;
-                } else if(sum ==n) {
-                    answer++;
-                    break;
-                }
+        
+        //연속된 수들의 합
+        int l = 1;
+        int r = 1;
+        int sum = 1;
+        
+        while(r<=n) {
+            if(sum == n) {
+                answer++;
+                r++;
+                sum += r;
+            } else if(sum < n) {
+                r++;
+                sum += r;
+            } else {
+                sum -= l;
+                l++;
             }
         }
-          
+        
         return answer;
     }
 }
