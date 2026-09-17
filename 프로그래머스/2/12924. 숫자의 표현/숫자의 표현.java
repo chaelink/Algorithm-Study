@@ -8,7 +8,7 @@ class Solution {
         int r = 1;
         int sum = 1;
         
-        while(r<=n) {
+        while(l<=r && r<=n) {
             if(sum == n) {
                 answer++;
                 r++;
