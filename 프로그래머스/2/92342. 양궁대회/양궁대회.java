@@ -1,14 +1,13 @@
 import java.util.*;
 class Solution {
     int[] answer = new int[11];
-    int diff=0;
+    int diff=0; //가장 큰 점수 차
     int[] last = new int[11];
-    boolean onemore = false;
+   
     public int[] solution(int n, int[] info) {
         
         dfs(0,0,n,info);
-            
-        if(!onemore) {
+        if(diff==0) {
             int[] ans = {-1};
             return ans;
         }
@@ -29,9 +28,7 @@ class Solution {
         //1. 선택지 탐색
         if((n-cnt) > info[round]) {
             answer[round] = info[round]+1;
-            //cnt += info[round]+1;
-            dfs(round+1, cnt + info[round]+1, n, info);
-            //cnt -= info[round]+1;
+            dfs(round+1, cnt+info[round]+1, n, info);
             answer[round] = 0;
         }
         
@@ -43,14 +40,16 @@ class Solution {
         int api=0;
         int ryn=0;
         for(int i=0; i<11; i++) {
+            if(info[i]==0 && answer[i]==0) {
+                continue;
+            }
             if(info[i]<answer[i]) {
                 ryn+=(10-i);
-            } else if(info[i]>=answer[i] && info[i]!=0) {
+            } else {
                 api+=(10-i);
             }
         }
         if(ryn>api) {
-            onemore = true;
             if((ryn-api)>diff) {
                 diff = ryn - api;
                 last = answer.clone();
