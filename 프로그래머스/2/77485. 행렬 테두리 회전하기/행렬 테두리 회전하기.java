@@ -13,10 +13,8 @@ class Solution {
         int idx=0;
         for(int[] q : queries) {
             int minn = Integer.MAX_VALUE;
-            int x1 = q[0];
-            int y1 = q[1];
-            int x2 = q[2];
-            int y2 = q[3];
+            int x1 = q[0]; int y1 = q[1];
+            int x2 = q[2];  int y2 = q[3];
             int now = 0;
             int before = arr[x1][y1];
             //y1 부터 y2
@@ -48,7 +46,6 @@ class Solution {
                 before = now;
             }
             answer[idx] = minn;
-            
             idx++;
         }   
         
