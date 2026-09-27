@@ -23,7 +23,7 @@ class Solution {
         
         //mid = (q1sum + q2sum)/2;
         
-        while(answer < nn*2) {
+        while(answer < nn*4) {
             if(q1sum == q2sum) {
                 return answer;
             }
