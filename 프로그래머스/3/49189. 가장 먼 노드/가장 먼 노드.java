@@ -15,36 +15,41 @@ class Solution {
             edge3.get(a).add(b);
             edge3.get(b).add(a);
         }
-        
-        
+               
         int answer = 0;
         HashMap<Integer, Integer> map = new HashMap<>();
         Queue<Integer> q = new ArrayDeque<>();
+        
         int visited[] = new int[n+1];
         
         q.add(1);
         visited[1] = 1;
-        map.put(1,0);
+       // map.put(1,0);
       
         int maxn = 0;
         
         while(!q.isEmpty()) {
             int now = q.poll();
+            
             for(int i : edge3.get(now)) {
                 if(visited[i]==0) {
                     q.add(i);
-                    visited[i] = 1;
-                    map.put(i, map.get(now)+1);
-                    maxn = Math.max(maxn, map.get(now)+1);
+                    visited[i] = visited[now]+1;
+                    //map.put(i, map.get(now)+1);
+                    maxn = Math.max(maxn, visited[i]);
                 }
             }        
         }
         
-        for(Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            if(entry.getValue() == maxn) {
-                answer++;
-            }
+        for(int i=1; i<n+1; i++) {
+            if(visited[i]==maxn) answer++;
         }
+        
+        // for(Map.Entry<Integer, Integer> entry : map.entrySet()) {
+        //     if(entry.getValue() == maxn) {
+        //         answer++;
+        //     }
+        // }
         return answer;
     }
 }
