@@ -1,3 +1,4 @@
+import java.util.*;
 class Solution {
     public int[] solution(int n, int m) {
         int[] answer = new int[2];
@@ -7,12 +8,12 @@ class Solution {
         return answer;
     }
     
-    int gcd(int a, int b) {
-        if(b==0) return a;
-        return gcd(b, a%b);
+    int gcd(int n, int m) {
+        if(m==0) return n;
+        return gcd(m, n%m);
     }
     
-    int lcm(int a, int b) {
-        return a/gcd(a,b)*b;
+    int lcm(int n, int m) {
+        return (n/gcd(n,m))*m ;
     }
 }
