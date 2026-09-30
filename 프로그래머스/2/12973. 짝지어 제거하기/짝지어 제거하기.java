@@ -5,16 +5,20 @@ class Solution
     {
         Stack<Character> st = new Stack<>();
         st.push(s.charAt(0));
+        
         for(int i=1; i<s.length(); i++) {
-            if(st.size()>0 && st.peek() == s.charAt(i)) {
+            char c = s.charAt(i);
+            if(!st.isEmpty() && st.peek()==c) {
                 st.pop();
             } else {
-                st.push(s.charAt(i));
+                st.push(c);
             }
         }
         
-        if(st.size()>0) {return 0;}
-        else return 1;
-      
+        if(st.size()>0) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }
