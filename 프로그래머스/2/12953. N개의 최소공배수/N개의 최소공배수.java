@@ -1,9 +1,12 @@
+import java.util.*;
 class Solution {
     public int solution(int[] arr) {
         int answer = arr[0];
+        
         for(int i=1; i<arr.length; i++) {
             answer = lcm(answer, arr[i]);
         }
+           
         return answer;
     }
     
@@ -13,7 +16,6 @@ class Solution {
     }
     
     int lcm(int a, int b) {
-        int n = a*b;
-        return n/gcd(a,b);
+        return (a/gcd(a,b))*b;
     }
 }
