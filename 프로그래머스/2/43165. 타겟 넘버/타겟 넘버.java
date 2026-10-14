@@ -1,21 +1,25 @@
 import java.util.*;
 class Solution {
+    int n;
     int answer = 0;
     public int solution(int[] numbers, int target) {
-        //주어진 숫자가 20개 이하이므로 완전탐색 가능
+        n = numbers.length;
         
-        dfs(0,0,numbers, target);
+        dfs(0,0,target, numbers);
         
         return answer;
     }
     
-    void dfs(int depth, int num, int[] numbers, int target) {
-        if(depth == numbers.length) {
-            if(num==target) answer++;
+    void dfs(int idx, int sum, int target, int[] numbers) {
+        //탈출
+        if(idx==n) {
+            if(sum ==target) {answer++;}
             return;
         }
         
-        dfs(depth+1, num + numbers[depth], numbers, target);
-        dfs(depth+1, num - numbers[depth], numbers, target);       
+        //탐색
+        dfs(idx+1, sum + numbers[idx], target, numbers);
+        dfs(idx+1, sum - numbers[idx], target, numbers);
+        
     }
 }
