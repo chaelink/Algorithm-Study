@@ -1,44 +1,45 @@
 import java.util.*;
-
 class Solution {
     public int solution(String begin, String target, String[] words) {
-        int answer = 0;
-        //방문 체크
         int n = words.length;
-        int[] visited = new int[n];
+        int[] visit = new int[n];
+        //단어, 횟수
+        Map<String, Integer> map = new HashMap<>();
+        
+        //bfs
         Queue<String> q = new ArrayDeque<>();
         q.add(begin);
+        map.put(begin,0);
         
+        //큐(단어)
         while(!q.isEmpty()) {
-            int size = q.size();
-            for(int i=0; i<size; i++) {
-                String str = q.poll();
-                //System.out.println(str);
-                if(str.equals(target)) return answer;
-                
-                for(int k=0; k<n; k++) {
-                    if(visited[k]==0 && check(str, words[k])) {
-                        visited[k]=1;
-                        q.add(words[k]);
-                        
+            String str = q.poll();
+            if(str.equals(target)) {
+                return map.get(str);
+            }
+            
+            for(int i=0; i<n; i++) {
+                if(visit[i]==0) {
+                    if(check(str, words[i])) {
+                        q.add(words[i]);
+                        visit[i] = 1;
+                        map.put(words[i], map.get(str)+1);
                     }
                 }
             }
-            answer++;
-        }
+        }   
         
         return 0;
     }
     
     boolean check(String a, String b) {
-        int n = a.length();
-        int t = 0;
-        for(int i=0; i<n; i++) {
-            if(a.charAt(i) != b.charAt(i)) {
-                t++;
+        int n = 0;
+        for(int i=0; i<a.length(); i++) {
+            if(a.charAt(i)!=b.charAt(i)) {
+                n++;
             }
-            if(t==2) return false;
         }
-        return true;
+        if(n!=1) {return false;}
+        else return true;
     }
 }
