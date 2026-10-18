@@ -3,61 +3,42 @@ import java.util.*;
 class Solution {
     public int solution(String s) {
         int answer = 0;
-        if(check(s)) {answer++;}
+        int n = s.length();
+        if(check(s)) answer++;
         
-        for(int i=1; i<s.length(); i++) {
+        for(int i=1; i<n; i++) {
             char c = s.charAt(0);
             s = s.substring(1);
             s += c;
-            if(check(s)) {answer++;}
+            if(check(s)) answer++;
         }
+        //for문 돌면서 s 새로 만들고 -> 확인
+  
         return answer;
     }
     
-    public boolean check(String s) {
-        Deque<Character> st = new ArrayDeque<>();
+    boolean check(String str) {
+        Stack<Character>st = new Stack<>();
         
-        for(int i=0; i<s.length(); i++) {
-            if(s.charAt(i)=='(') {
+        for(int i=0; i<str.length(); i++) {
+            char c = str.charAt(i);
+            if(c=='(') {
                 st.push(')');
-            }
-            if(s.charAt(i)=='[') {
+            } else if(c=='['){
                 st.push(']');
-            }
-            if(s.charAt(i)=='{') {
+            } else if(c=='{'){
                 st.push('}');
-            }
-            if(s.charAt(i)==')') {
-                if(st.isEmpty()) {
-                    return false;
-                } else {
-                    char c = st.pop();
-                    if(c != s.charAt(i)) {return false;}
-                }   
-            }
-            if(s.charAt(i)=='}') {
-                if(st.isEmpty()) {
-                    return false;
-                } else {
-                    char c = st.pop();
-                    if(c!=s.charAt(i)) {return false;}
+            }else {
+                if(st.isEmpty()) {return false;}
+                else {
+                    char top = st.pop();
+                    if(top != c) return false;
                 }
-            }
-            if(s.charAt(i)==']') {
-                if(st.isEmpty()) {
-                    return false;
-                } else {
-                    char c = st.pop();
-                if(c!=s.charAt(i)) {return false;}
-                }
-                
             }
         }
-        if(st.isEmpty()) {
+        if(st.size()==0) {
             return true;
-        } else {
-            return false;
         }
-        
+        return false;
     }
 }
