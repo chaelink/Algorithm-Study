@@ -1,21 +1,20 @@
 import java.util.*;
+
 class Solution {
     public int solution(int[] people, int limit) {
         int answer = 0;
-        //무조건 최대 2명씩
         Arrays.sort(people);
+        int left = 0;
+        int right = people.length -1;
         
-        int start=0;
-        int end = people.length-1;
-        
-        while(start <= end) {
-            if(people[start] + people[end]<=limit) {
-                start++;
+        while(left<=right) {
+            int w = people[right];
+            if(left !=right) {
+                if(w + people[left]<=limit) left++;
             }
+            right--;
             answer++;
-            end--;
         }
-   
         return answer;
     }
 }
