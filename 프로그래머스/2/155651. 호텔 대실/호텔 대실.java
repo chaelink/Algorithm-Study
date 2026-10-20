@@ -1,47 +1,45 @@
 import java.util.*;
 class Solution {
     public int solution(String[][] book_time) {
-        int answer = 0;
-        Arrays.sort(book_time, (a,b) -> {
-            return a[0].compareTo(b[0]);
-        });
-        
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-        
-        //첫번쨰 방은 갯수 하나 늘리고 pq에 종료+10분 삽입
-        answer = 1;
-        pq.add(min(book_time[0][1])+10);
         int room = 0;
+        int avail=0;
         
-        //for문
-        //이번 입실 시간 기준 pq에서 뺼 수 있는거 체크, 재사용 or 갯수 늘리기 선택
-        for(int i=1; i<book_time.length; i++) {
-            String[] str = book_time[i];
-            int time = min(str[0]);
+        //1. 입실 시간 순으로 정렬
+        Arrays.sort(book_time, (a,b) -> a[0].compareTo(b[0]));
+        
+        //2. 퇴실 시간 저장하는 큐(pq)
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        int time = 0;
+        
+        for(String[] str : book_time) {
+            //현재 시간 업데이트
+            time = cal(str[0]);
             
+            //큐에서 꺼낼 방 있으면 꺼내기 -> room 증가
             boolean go = true;
-            while(go) {
-                if(!pq.isEmpty() && pq.peek()<=time) {
-                    pq.poll();
-                    room++;
+            while(!pq.isEmpty() && go) {
+                int end = pq.peek();
+                if(end<=time) {
+                    pq.remove();
+                    avail++;
                 } else {go = false;}
             }
             
-            if(room>0) {
-                room--;
+            //room 사용 or 증가, pq에 종료시간 추가
+            if(avail>0) {
+                avail--;
             } else {
-                answer++;
+                room++;
             }
             
-            pq.add(min(str[1])+10);
+            pq.add(cal(str[1])+10);
         }
         
-        return answer;
+        return room;
     }
     
-    int min(String str) {
-        String[] st = str.split(":");
-        int sum = Integer.parseInt(st[0])*60 + Integer.parseInt(st[1]);
-        return sum;
+    int cal(String str) {
+        String[] s = str.split(":");
+        return Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]);
     }
 }
