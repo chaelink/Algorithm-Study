@@ -1,28 +1,29 @@
 import java.util.*;
 class Solution {
-    int[] visit;
     int answer = 0;
-    int n;
+    int[] visit;
     public int solution(int k, int[][] dungeons) {
-        
-        //최소필요, 소모
-        n = dungeons.length;
+        int n = dungeons.length;
         visit = new int[n];
         
-        dfs(k, dungeons, 0);
+        dfs(k,dungeons, 0);
         
         return answer;
     }
     
-    void dfs(int k, int[][] dungeons, int d) {
-        answer = Math.max(answer, d);
+    void dfs(int k, int[][] dungeons, int ans) {
+        //갱신
+        answer = Math.max(answer, ans);
         
-        for(int i=0; i<n; i++) {
+        //탐색
+        for(int i=0; i<dungeons.length; i++) {
             if(visit[i]==0 && dungeons[i][0]<=k) {
-                visit[i]=1;
-                dfs(k-dungeons[i][1], dungeons, d+1);
+                visit[i] = 1;
+                dfs(k-dungeons[i][1], dungeons, ans+1);
                 visit[i] = 0;
             }
         }
     }
+    
+    
 }
