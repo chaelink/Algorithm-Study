@@ -1,32 +1,33 @@
 import java.util.*;
-
 class Solution {
-    int visited[];
-    List<String> answer = new ArrayList<>();
-
+    int[] visit;
+    int n;
+    List<String> ans = new ArrayList<>();
     public String[] solution(String[][] tickets) {
-        int n = tickets.length;
-        visited = new int[n];
-       
-        String path = "";
+        n = tickets.length;
+        visit = new int[n];
         
-        dfs(0, n, "ICN", tickets, "ICN");
+        //icn을 시작으로 dfs
+        dfs("ICN", tickets, "ICN",0);
+        Collections.sort(ans);
+        String[] answer = ans.get(0).split(" ");
         
-        Collections.sort(answer);
-        
-        return answer.get(0).split(" ");
+        return answer;
     }
     
-    public void dfs(int depth, int n, String start, String[][] tickets, String path) {
-        if(depth == n) {
-            answer.add(path);
+    void dfs(String dep, String[][] tickets, String list, int cnt) {
+        //탈출, 모두 방문하면
+        if(cnt==n) {
+            ans.add(list);
             return;
         }
+        
+        //탐색
         for(int i=0; i<n; i++) {
-            if(tickets[i][0].equals(start) && visited[i]==0) {
-                visited[i] = 1;
-                dfs(depth+1, n, tickets[i][1], tickets, path + " " + tickets[i][1]);
-                visited[i] = 0;
+            if(tickets[i][0].equals(dep) && visit[i]==0) {
+                visit[i] = 1;
+                dfs(tickets[i][1], tickets, list+" "+tickets[i][1], cnt+1);
+                visit[i] = 0;
             }
         }
     }
