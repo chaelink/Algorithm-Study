@@ -2,66 +2,53 @@ import java.util.*;
 class Solution {
     public int[] solution(int[] fees, String[] records) {
         
-        //fees 기본시간, 기본요금, 단위시간, 단위요금
-        
-        //입출차 기록
-        Map<String, Integer> map = new HashMap<>();
-        
-        //최종 차량, 분 기록
-        TreeMap<String,Integer> tmap = new TreeMap<>();
-        
-        for(String str : records) {
-            String[] word = str.split(" ");
-            String[] time = word[0].split(":");
-            int minute = Integer.valueOf(time[0])*60 + Integer.valueOf(time[1]);
-            if(word[2].equals("IN")) {
-                map.put(word[1], minute);
+        //입차이면, 맵에 차량번호, 입차 시간 저장
+        Map<String,String> map = new HashMap<>();
+        Map<String, Integer> sumMap = new HashMap<>();
+        for(String s : records) {
+            String[] str = s.split(" ");
+            if(str[2].equals("IN")) {
+                map.put(str[1],str[0]);
             } else {
-                int in_time = map.get(word[1]);
-                map.remove(word[1]);
-                int m = minute - in_time;
-                tmap.put(word[1], tmap.getOrDefault(word[1],0)+m);               
-            } 
-        }
-        
-        if(map.size()>0) {
-            for(String str : map.keySet()) {
-                int out_m = 23*60 + 59;
-                int m = out_m - map.get(str);
-                tmap.put(str, tmap.getOrDefault(str,0)+m);
-                // if(m > fees[0]) {
-                //     fee += fees[1];
-                //     m -= fees[0];
-                //     int r = m/fees[2];
-                //     if(m%fees[2]>0) r++;
-                //     fee += r*fees[3];
-                //     tmap.put(str, tmap.getOrDefault(str,0)+fee);
-                // } else {
-                //     fee += fees[1];
-                //     tmap.put(str, tmap.getOrDefault(str,0)+fee);
-                // }
+                String inTime = map.get(str[1]);
+                map.remove(str[1]);
+                sumMap.put(str[1],sumMap.getOrDefault(str[1],0)+cal(inTime,str[0]));
             }
         }
         
-        int[] answer = new int[tmap.size()];
-        int idx=0;
-        for(Map.Entry<String, Integer> entry : tmap.entrySet()) {
-            int m = entry.getValue();
-            int fee=0;
-            if(m > fees[0]) {
-                fee += fees[1];
-                m -= fees[0];
-                int r = m/fees[2];
-                if(m%fees[2]>0) r++;
-                fee += r*fees[3];
-                answer[idx] = fee;
+        //출차기록이 없는 차들
+        for(String str : map.keySet()) {
+            sumMap.put(str, sumMap.getOrDefault(str,0)+cal(map.get(str),"23:59"));
+        }
+        
+        //요금 계산
+        int n = sumMap.size();
+        int[] answer = new int[n];
+        List<String> list = new ArrayList<>();
+        for(String s : sumMap.keySet()) {
+            list.add(s);
+        }
+        Collections.sort(list);
+        int idx = 0;
+        for(String car : list) {
+            int time = sumMap.get(car);
+            if(time <= fees[0]) {
+                answer[idx] = fees[1];
             } else {
-                fee += fees[1];
-                answer[idx] = fee;
+                int p = time - fees[0];
+                int m = (p/fees[2]);
+                if(p % fees[2]>0) m++;
+                answer[idx] = fees[1] + m*fees[3];
             }
             idx++;
         }
-
+        
         return answer;
+    }
+    
+    int cal(String in, String out) {
+        String[] a = in.split(":");
+        String[] b = out.split(":");
+        return (Integer.parseInt(b[0])*60 + Integer.parseInt(b[1])) - (Integer.parseInt(a[0])*60 + Integer.parseInt(a[1]));
     }
 }
