@@ -1,31 +1,24 @@
 import java.util.*;
-
 class Solution {
     public String solution(String number, int k) {
-        StringBuilder answer = new StringBuilder("");
         int n = number.length();
-        Stack<Character> st = new Stack<>();
+        int cnt = n - k;
+        String answer = "";
+        String[] num = number.split("");
+        int idx = 0;
         
-        int count = 0;
-        st.push(number.charAt(0));
-        
-        for(int i=1; i<n; i++) {
-            while(!st.isEmpty() && count<k && st.peek()<number.charAt(i)) {
-                st.pop();
-                count++;
+        for(int c=cnt; c>0; c--) {
+            int maxNum = -1; int maxIdx = -1;
+            for(int i=idx; i<=n-c; i++) {
+                if(maxNum < Integer.parseInt(num[i])) {
+                    maxNum = Integer.parseInt(num[i]); maxIdx = i;
+                    if(maxNum==9) break;
+                }
             }
-            st.push(number.charAt(i));
+            answer += maxNum;
+            idx = maxIdx+1;
         }
         
-        while(count<k) {
-            st.pop();
-            count++;
-        }
-        
-        for(char c : st) {
-            answer.append(c);
-        }
-        
-        return answer.toString();
+        return answer;
     }
 }
