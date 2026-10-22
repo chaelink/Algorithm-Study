@@ -8,7 +8,7 @@ class Solution {
         int idx = 0;
         
         for(int c=cnt; c>0; c--) {
-            int maxNum = -1; int maxIdx = -1;
+            int maxNum = -9; int maxIdx = -1;
             for(int i=idx; i<=n-c; i++) {
                 if(maxNum < Integer.parseInt(num[i])) {
                     maxNum = Integer.parseInt(num[i]); maxIdx = i;
