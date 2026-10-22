@@ -1,47 +1,42 @@
 import java.util.*;
 class Solution {
-    List<List<Integer>> list = new ArrayList<>();
-    int[] visit; 
-    int[] ans = new int[2];
-    int answer = 0;
-    int n;
+    int wolf = 0;
+    int sheep = 1;
+    int n; int answer = 0;
+    int[] visit;
     public int solution(int[] info, int[][] edges) {
         n = info.length;
-        
-        for(int i=0; i<n; i++) {
-            list.add(new ArrayList<>());
-        }
-        for(int[] e : edges) {
-            int a = e[0]; int b = e[1];
-            list.get(a).add(b);
-        }
         visit = new int[n];
-        ans[0] = 1;
+        //늑대>=양 -> 모든 양이 잡아먹힘
+        //잡아먹히지 X, 최대한 많은 수의 양 모으기 
         visit[0] = 1;
-        
-        dfs(0, info);
+        dfs(0,1,info, edges);
         
         return answer;
     }
-    
-    void dfs(int node, int[] info) {
-        if(ans[0]<=ans[1]) {
-            return;
-        }
+    void dfs(int wolf, int sheep, int[] info, int[][] edges) {
+        //양 갯수 갱신
+        answer = Math.max(answer, sheep);
         
-        answer = Math.max(answer, ans[0]);
         
-        //선택지
-        for(int i=0; i<n; i++) {
-            for(Integer idx : list.get(i)) {
-                if(visit[i]==1 && visit[idx]==0) {
-                    ans[info[idx]]++;
-                    visit[idx]=1;
-                    dfs(idx, info);
-                    ans[info[idx]]--;
-                    visit[idx]=0;
+        //탐색, [a,b] 일때 a를 이미 방문, b를 방문전
+        for(int[] e : edges) {
+            if(visit[e[0]]==1 && visit[e[1]]==0) {
+                if(info[e[1]]==0) {
+                    visit[e[1]]=1;
+                    dfs(wolf, sheep+1, info, edges);
+                    visit[e[1]]=0;
+                } else {
+                    if(wolf+1<sheep) {
+                        visit[e[1]]=1;
+                        dfs(wolf+1, sheep, info, edges);
+                        visit[e[1]]=0; 
+                    } 
                 }
             }
         }
+        //양 -> 진행
+        
+        //늑대 -> 추가해도 늑대<양이면 진행
     }
 }
