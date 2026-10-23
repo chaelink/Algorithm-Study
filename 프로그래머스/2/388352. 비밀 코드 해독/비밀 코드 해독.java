@@ -2,20 +2,19 @@ import java.util.*;
 class Solution {
     List<Integer>list = new ArrayList<>();
     //지금 내 방식 : n까지의 전체 조합을 구하고 -> 조건 일치 확인
-    Set<List<Integer>> set = new HashSet<>();
-    
+    int answer = 0;
     public int solution(int n, int[][] q, int[] ans) {
         
         dfs(1,n, q, ans);
         
-        return set.size();
+        return answer;
     }
     
     void dfs(int idx, int n, int[][] q, int[] ans) {
         //n까지의 수 중 5개 -> 조합(순서 상관 없음)
         if(list.size()==5) {
             if(check(q,ans)) {
-                set.add(list);
+                answer++;
             }
             return;
         }
