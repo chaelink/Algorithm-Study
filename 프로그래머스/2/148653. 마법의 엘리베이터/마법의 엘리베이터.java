@@ -10,12 +10,10 @@ class Solution {
             int m = storey / 10;
             int s = storey % 10;
             if(s==5) {
-                if(m % 10 >=5) {
-                    answer += 5;
+                if(m % 10>=5) {
                     m++;
-                } else {
-                    answer += s;
                 }
+                answer += s;
             } else if(s < 5) {
                 answer += s;
             } else {
