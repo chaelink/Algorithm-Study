@@ -2,49 +2,59 @@ import java.util.*;
 class Solution {
     public int solution(int[][] points, int[][] routes) {
         int answer = 0;
-        int x = routes.length;
-        Map<String, Integer> map = new HashMap<>();
+        Map<String,Integer> map = new HashMap<>();
         
-        //각 로봇의 포인트 순회 저장
-        for(int[] route : routes) {
-            int count=0;
-            int[] p = points[route[0]-1];
-            int r = p[0];
-            int c = p[1];
-            
-            String str = count + "_" + r + "_" + c;
-            //시작 위치 저장
+        for(int[] r : routes) {
+            int time = 0;
+            int sx = points[r[0]-1][0]; int sy = points[r[0]-1][1];
+            String str = sx+" "+sy+" "+time;
+            //System.out.println(str);
             map.put(str, map.getOrDefault(str,0)+1);
+            time++;
             
-            //2번째 포인트부터 경로 저장
-            for(int i=1; i<route.length; i++) {
-                p = points[route[i]-1];
-                int tr = p[0];
-                int tc = p[1];
+            for(int i=0; i<r.length-1; i++) {
+                //출발 위치, 도착 위치
+                sx = points[r[i]-1][0]; sy = points[r[i]-1][1];
+                int tx = points[r[i+1]-1][0]; int ty = points[r[i+1]-1][1];
                 
-                while(r != tr) {
-                    count++;
-                    if(r<tr) r++;
-                    else r--;
-                    str = count + "_" + r + "_" + c;
-                    map.put(str, map.getOrDefault(str,0)+1);
+                if(sx<tx) {
+                    for(int j=sx+1; j<=tx; j++) {
+                        str = j+" "+sy+" "+time;
+                        //System.out.println(str);
+                        map.put(str, map.getOrDefault(str,0)+1);
+                        time++;
+                    }
+                } else {
+                    for(int j=sx-1; j>=tx; j--) {
+                        str = j+" "+sy+" "+time;
+                        //System.out.println(str);
+                        map.put(str, map.getOrDefault(str,0)+1);
+                        time++;
+                    }
                 }
-                while(c != tc) {
-                    count++;
-                    if(c<tc) c++;
-                    else c--;
-                    str = count + "_" + r + "_" + c;
-                    map.put(str, map.getOrDefault(str,0)+1);
-                }    
+                
+                if(sy<ty) {
+                    for(int j=sy+1; j<=ty; j++) {
+                        str = tx+" "+j+" "+time;
+                        //System.out.println(str);
+                        map.put(str, map.getOrDefault(str,0)+1);
+                        time++;
+                    }
+                } else {
+                    for(int j=sy-1; j>=ty; j--) {
+                        str = tx+" "+j+" "+time;
+                        //System.out.println(str);
+                        map.put(str, map.getOrDefault(str,0)+1);
+                        time++;
+                    }
+                }
             }
         }
         
-        for(String s : map.keySet()) {
-            if(map.get(s)>=2) {
-                answer++;
-            }
-        }
-        
+        for(String str : map.keySet()) {
+            //System.out.println(str);
+            if(map.get(str)>=2) answer++;
+        }  
         return answer;
     }
 }
