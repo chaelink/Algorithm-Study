@@ -11,7 +11,7 @@ class Solution {
             int s = storey % 10;
             if(s==5) {
                 if(m % 10 >=5) {
-                    answer += (10-s);
+                    answer += 5;
                     m++;
                 } else {
                     answer += s;
