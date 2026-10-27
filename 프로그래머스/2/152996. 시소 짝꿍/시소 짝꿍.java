@@ -5,7 +5,6 @@ class Solution {
         long answer = 0;
         Map<Double, Long> map = new HashMap<>();
         
-        // 정렬을 하면 작은 값에서 큰 값으로 비율(2/3, 1/2, 3/4)만 체크하면 되서 편합니다.
         Arrays.sort(weights);
         
         for (int w : weights) {
@@ -16,6 +15,7 @@ class Solution {
             if (map.containsKey(d * 1 / 2)) answer += map.get(d * 1 / 2); // 1:2
             if (map.containsKey(d * 3 / 4)) answer += map.get(d * 3 / 4); // 3:4
             
+            //같은 값이 2개이상 있을 수 있기때문 ex)100, 100
             map.put(d, map.getOrDefault(d, 0L) + 1);
         }
         
