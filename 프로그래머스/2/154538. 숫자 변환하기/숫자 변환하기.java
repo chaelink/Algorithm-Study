@@ -1,34 +1,38 @@
 import java.util.*;
-
 class Solution {
     public int solution(int x, int y, int n) {
-        int answer = 0;
-        Set<Integer> visit = new HashSet<>();
+        int[] visit = new int[1000001];
+        visit[x] = 0;
         Queue<Integer> q = new ArrayDeque<>();
         q.add(x);
         
         while(!q.isEmpty()) {
-            int nn = q.size();
-            for(int i=0; i<nn; i++) {
-                int a = q.remove();
-            if(a == y) return answer;
-            
-            if(!visit.contains(a+n) && (a+n <= y)) {
-                q.add(a+n);
-                visit.add(a+n);
-            }
-            if(!visit.contains(a*2) &&  (a*2 <= y)) {
-                q.add(a*2);
-                visit.add(a*2);
-            }
-            if(!visit.contains(a*3) &&  (a*3 <= y)) {
-                q.add(a*3);
-                visit.add(a*3);
-            }
+            int d = q.poll();
+            if(d==y) {
+                return visit[d];
             }
             
-            answer++;
+            int cnt = visit[d];
+            
+            //1) x+n
+            if(d+n<=1000000 && visit[d+n]==0) {
+                visit[d+n] = cnt+1;
+                q.add(d+n);
+            }
+            
+            //2) x*2
+            if(d*2<=1000000 && visit[d*2]==0) {
+                visit[d*2] = cnt+1;
+                q.add(d*2);
+            }
+            
+            //3) x*3
+            if(d*3<=1000000 && visit[d*3]==0) {
+                visit[d*3] = cnt+1;
+                q.add(d*3);
+            }
         }
+        
         return -1;
     }
 }
