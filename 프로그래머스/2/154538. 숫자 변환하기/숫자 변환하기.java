@@ -15,19 +15,19 @@ class Solution {
             int cnt = visit[d];
             
             //1) x+n
-            if(d+n<=1000000 && visit[d+n]==0) {
+            if(d+n<=y && visit[d+n]==0) {
                 visit[d+n] = cnt+1;
                 q.add(d+n);
             }
             
             //2) x*2
-            if(d*2<=1000000 && visit[d*2]==0) {
+            if(d*2<=y && visit[d*2]==0) {
                 visit[d*2] = cnt+1;
                 q.add(d*2);
             }
             
             //3) x*3
-            if(d*3<=1000000 && visit[d*3]==0) {
+            if(d*3<=y && visit[d*3]==0) {
                 visit[d*3] = cnt+1;
                 q.add(d*3);
             }
