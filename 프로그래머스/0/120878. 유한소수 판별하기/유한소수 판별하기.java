@@ -1,13 +1,11 @@
 import java.util.*;
 class Solution {
     public int solution(int a, int b) {
-        int n = gcm(a,b);
+        int n = gcd(a,b);
         
         //약분
         a /=n;
         b /=n;
-        //System.out.println(a);
-        //System.out.println(b);
         
         //소인수체크
         while(b%2==0) {
@@ -21,8 +19,8 @@ class Solution {
         else return 2;
     }
     
-    int gcm(int a, int b) {
+    int gcd(int a, int b) {
         if(b==0) return a;
-        return gcm(b,a%b);
+        return gcd(b,a%b);
     }
 }
