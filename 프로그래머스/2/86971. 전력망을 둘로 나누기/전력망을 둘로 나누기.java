@@ -1,44 +1,49 @@
 import java.util.*;
 class Solution {
+    List<List<Integer>> list = new ArrayList<>();
     int[] visit;
-    int num1;
     public int solution(int n, int[][] wires) {
+        //전선은 최대 99개
+        //list에 송전탑 경로 설정
         int answer = n;
-        
-        //arr 처리
-        int[][] arr = new int[n+1][n+1];
-        for(int[] w : wires) {
-            int a = w[0];
-            int b = w[1];
-            arr[a][b] = 1; arr[b][a]=1;
+        for(int i=0; i<=n; i++) {
+            list.add(new ArrayList<>());
         }
         
-        //돌아가면서 길 하나 지우고
         for(int[] w : wires) {
             int a = w[0];
             int b = w[1];
-            arr[a][b] = 0; arr[b][a]=0;
-            //dfs로 갯수 카운트, 차 계산
+            list.get(a).add(b);
+            list.get(b).add(a);
+        }
+        
+        //선을 하나씩 끊어가면서 갯수 세기, 최소 차를 저장
+        for(int[] w : wires) {
+            int a = w[0]; int b = w[1];
+            list.get(a).remove(Integer.valueOf(b));
+            list.get(b).remove(Integer.valueOf(a));
             visit = new int[n+1];
-            num1 = 0;
-            dfs(1, n, arr);
-            int num2 = n - num1;
-            answer = Math.min(answer, Math.abs(num1-num2));
-            arr[a][b] = 1; arr[b][a]=1;
-        }   
+            visit[1] = 1;
+            int num = dfs(1);
+            int other = n - num;
+            answer = Math.min(answer, Math.abs(num-other));
+            list.get(a).add(b);
+            list.get(b).add(a);
+        }
         
         return answer;
     }
     
-    void dfs(int idx, int n, int[][] arr) {
-        visit[idx] = 1;
-        num1++;
+    int dfs(int node) {
+        int count = 1;
         
-        for(int i=1; i<=n; i++) {
-            if(arr[idx][i]==1 && visit[i]==0) {
-                dfs(i,n,arr);
+        for(int n : list.get(node)) {
+            if(visit[n]==0) {
+                visit[n]=1;
+                count += dfs(n);
             }
         }
+        
+        return count;
     }
-    
 }
