@@ -1,50 +1,57 @@
 import java.util.*;
 class Solution {
-    public int[] solution(int[][] arr) {
-        int n = arr.length;
+    int[][] visit;
+    public int[] solution(int[][] arr) {        
         int[] answer = new int[2];
-        //방문 체크
-        int[][] visit = new int[n][n];
-        int idx = n;
+        int n = arr.length;
+        int len = n;
+        visit = new int[n][n];
         
-        //큰 단위부터 보기(n부터 /2 1보다 클 떄까지)
-        while(idx>1) {
-            
-            for(int i=0; i<n; i+=idx) {
-                for(int ii=0; ii<n; ii+=idx) {
-                    if(visit[i][ii]==0 && check(i,ii, idx, arr)) {
-                        //answer 저장
-                        if(arr[i][ii]==0){answer[0]++;}
-                        else {answer[1]++;}
-                        //방문 처리
-                        for(int j=i; j<i+idx; j++) {
-                            for(int k=ii; k<ii+idx; k++) {
-                                visit[j][k]=1;
-                            }
+        while(n>1) {
+            for(int i=0; i<len; i+=n) {
+                for(int j=0; j<len; j+=n) {
+                    if(arr[i][j]==1 && visit[i][j]==0) {
+                        if(check(i,j,n,arr)) {
+                            answer[1]++;
                         }
                     }
-                }
+                    if(arr[i][j]==0 && visit[i][j]==0) {
+                        if(check(i,j,n,arr)) {
+                            answer[0]++;
+                        }
+                    }
+                }   
             }
-            idx = idx/2;
+            n/=2;
         }
         
-        //방문안한 곳만 갯수 세서 answer에 저장
-        for(int i=0; i<n; i++) {
-            for(int j=0; j<n; j++) {
-                if(visit[i][j]==0) answer[arr[i][j]]++;
+        for(int i=0; i<len; i++) {
+            for(int j=0; j<len; j++) {
+                if(visit[i][j]==0) {
+                    answer[arr[i][j]]++;
+                }
             }
         }
+        
+            
+        //인덱스, 길이 -> 모두 일치하면 해당 면적 모두 방문 처리, 1이면 1하나 증가
+        //쪼개서 반복  
         
         return answer;
     }
     
-    boolean check(int start, int sta, int n, int[][] arr) {
-        int num = arr[start][sta];
-        for(int i=start; i<start+n; i++) {
-            for(int j=sta; j<sta+n; j++) {
-                if(num != arr[i][j]) return false;
+    boolean check(int a, int b, int n,int[][] arr) {
+        int num = arr[a][b];
+        for(int i=a; i<a+n; i++) {
+            for(int j=b; j<b+n; j++) {
+                if(arr[i][j]!=num) return false;
             }
         }
-        return true;
+        for(int i=a; i<a+n; i++) {
+            for(int j=b; j<b+n; j++) {
+                visit[i][j]=1;
+            }
+        }
+        return true;    
     }
 }
